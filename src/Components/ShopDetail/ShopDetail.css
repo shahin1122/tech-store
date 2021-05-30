@@ -1,0 +1,21 @@
+.styleComp{
+    width: 75% !important;
+    margin: 0 auto !important;
+    border: 5px solid gray;
+}
+
+.btn-design{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.name-design{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+
