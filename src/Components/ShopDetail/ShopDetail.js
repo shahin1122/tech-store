@@ -1,29 +1,54 @@
-import React from 'react';
-import './ShopDetail.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import styles from "./ShopDetail.module.css"
 
-const ShopDetail = ({prod}) => {
+// Redux
+import { connect } from "react-redux";
+import {
+  loadCurrentItem,
+  addToCart,
+} from "../../redux/Shopping/shopping-actions.js";
 
-    return (
-        <div>
-           <div className="row styleComp w-75">
-           <div className=" col-md-4">
-                <img src={prod.img} alt="" />
+const ShopDetails = ({ product, addToCart, loadCurrentItem }) => {
+  return (
+    <div className={styles.product}>
+      <img
+        className={styles.product__image}
+        src={product.image}
+        alt={product.title}
+      />
 
-            </div>
-            <div className="col-md-4 name-design">
-                <h6>Name: {prod.name}</h6>
-                
-            </div>
+      <div className={styles.product__details}>
+        <p className={styles.details__title}>{product.name}</p>
+        <p className={styles.details__desc}>{product.description}</p>
+        <p className={styles.details__price}>$ {product.price}</p>
+      </div>
 
-            <div className="col-md-4 btn-design">
-                <p className="m-3 p-3">Price : <b>$ {prod.price}</b></p>
-                <button className="btn btn-primary">Buy Now</button>
-
-            </div>
-           </div>
-            
-        </div>
-    );
+      <div className={styles.product__buttons}>
+        <Link to={`/product/${product.id}`}>
+          <button
+            onClick={() => loadCurrentItem(product)}
+            className={`${styles.buttons__btn} ${styles.buttons__view}`}
+          >
+            View Item
+          </button>
+        </Link>
+        <button
+          onClick={() => addToCart(product.id)}
+          className={`${styles.buttons__btn} ${styles.buttons__add}`}
+        >
+          Add To Cart
+        </button>
+      </div>
+    </div>
+  );
 };
 
-export default ShopDetail;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (id) => dispatch(addToCart(id)),
+    loadCurrentItem: (item) => dispatch(loadCurrentItem(item)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(ShopDetails);

@@ -1,36 +1,43 @@
-import './App.css';
-import { Navbar , Nav ,NavDropdown,  } from 'react-bootstrap';
-import logo from '../src/images/Untitled-1.png'
-import Header from './Components/Header/Header';
-import Shop from './Components/Shop/Shop';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import "./App.css";
 
-function App() {
+import { connect } from "react-redux";
+import Shop from "./Components/Shop/Shop"
+import Header from "./Components/Header/Header"
+import Cart from "./Components/Cart/Cart"
+import SingleItem from "./Components/SingleItem/SingleItem"
+
+
+function App({ current }) {
   return (
-    <div>
-      <Navbar collapseOnSelect expand="lg" className="nav-bar" variant="dark">
-       <img src={logo} className="logoImg" alt="" />
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-      <Nav className="mr-auto">
-        <Nav.Link href="#features">Features</Nav.Link>
-        <Nav.Link href="#pricing">Pricing</Nav.Link>
-        </Nav>
-      <Nav>
-        <Nav.Link href="#deets">More deets</Nav.Link>
-        <Nav.Link eventKey={2} href="#memes">
-          Dank memes
-        </Nav.Link>
-      </Nav>
-    </Navbar.Collapse>
-  </Navbar>
-
-
-    <Header></Header>
-    <Shop></Shop>
-
-      
-    </div>
+    <Router>
+      <div className="app">
+        <Header />
+        <Switch>
+          
+          <Route exact path="/" component={Shop} />
+          <Route exact path="/cart" component={Cart} />
+          {!current ? (
+            <Redirect to="/" />
+          ) : (
+            <Route exact path="/product/:id" component={SingleItem}/>
+          )}
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    current: state.shop.currentItem,
+  };
+};
+
+export default connect(mapStateToProps)(App);

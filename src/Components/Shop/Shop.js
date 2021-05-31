@@ -1,28 +1,26 @@
-import React, { useState } from 'react';
-import fakeData from '../../fakeData'
+import React from "react";
+import styles from "./Shop.module.css";
+
+// Redux
+import { connect } from "react-redux";
+
 import ShopDetail from '../ShopDetail/ShopDetail';
 
-const Shop = () => {
-    console.log(fakeData)
-
-    
-
-    const first36 = fakeData.slice(0,36);
-
-    const [products , setProducts] = useState(first36);
-    
-    return (
-        <div>
-            <div>
-                {
-                    products.map(product => <ShopDetail prod ={product}></ShopDetail>)
-                }
-               
-            </div>
-            
-            
-        </div>
-    );
+const Shop = ({ products }) => {
+  return (
+    <div className={styles.products}>
+      {products.map((product) => (
+        <ShopDetail key={product.id} product={product} />
+      ))}
+    </div>
+  );
 };
 
-export default Shop;
+const mapStateToProps = (state) => {
+  return {
+    products: state.shop.products,
+  };
+};
+
+export default connect(mapStateToProps)(Shop);
+
